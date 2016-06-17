@@ -3,6 +3,7 @@ package trigons;
 import java.util.Random;
 
 import trigons.swing.TrigonModelListener;
+import trigons.puzzle.TSide;
 import trigons.swing.TrigonModel;
 import trigons.swing.TrigonUtil;
 
@@ -68,6 +69,18 @@ public class RandomTrigonModel implements TrigonModel {
 			throw new IllegalArgumentException("Unknown side: " + side);
 		}
 		return Math.max(0, r.nextInt(10) - 4);
+	}
+
+	@Override
+	public int getBorderValueAt(int x, int y, TSide side) {
+		// TODO Auto-generated method stub
+		return 0;
+	}
+
+	@Override
+	public boolean hasTriangleAt(int x, int y) {
+		// TODO Auto-generated method stub
+		return false;
 	}
 
 }
