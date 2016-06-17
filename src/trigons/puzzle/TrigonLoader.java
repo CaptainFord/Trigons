@@ -8,6 +8,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.Reader;
+import java.io.StringBufferInputStream;
+import java.io.StringReader;
 import java.io.UnsupportedEncodingException;
 
 import vordeka.util.exception.ImpossibleException;
@@ -87,5 +89,11 @@ public class TrigonLoader {
 		fin.close();
 		
 		return puzzle;
+	}
+
+
+	public static TrigonPuzzle loadPuzzle(String source) throws IOException {
+		Reader r = new StringReader(source);
+		return loadRawText(r);
 	}
 }

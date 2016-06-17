@@ -12,6 +12,7 @@ import javax.swing.JFrame;
 import javax.swing.UIManager;
 
 import trigons.generator.TrigonFiller;
+import trigons.puzzle.TriPuzzle;
 import trigons.puzzle.Trigon;
 import trigons.puzzle.TrigonBorder;
 import trigons.puzzle.TrigonLoader;
@@ -22,6 +23,8 @@ import vordeka.util.SettingsSaver;
 import vordeka.util.io.WriterSink;
 
 public class AppTrigons {
+	public static final String DEFAULT_PUZZLE_FILENAME = "Raw Puzzle.txt";
+	public static final String DEFAULT_PUZZLE = "Max 6;\n\nRow 0:11,17,7,9,9,5,12,9,5;\nRow -1:7,6,13,3,12,18,14,11,10,8,10;\nRow -2:10,15,12,9,8,13, ,16,10,9,6,7,13;\nRow -3:11,9,4,14,12, , , , , ,13,5,2,8,7;\nRow -3:10,6,2,7,8, , , , , ,11,12,14,8,4;\nRow -2:5,8,12,4,9,8, ,11,16,13,10,3,1;\nRow -1:6,6,5,14,3,10,15,15,4,12,11;\nRow 0:9,7,6,6,8,7,11,0,10";
 	
 	public static SettingsSaver settings;
 
@@ -33,13 +36,8 @@ public class AppTrigons {
 		}
 		settings = SettingsSaver.initSaver(".trigons");
 		Random rand = new Random("Your eyes are like pools of cheese in the rain".hashCode());
-		TrigonPuzzle puzzle;
-		try {
-			puzzle = TrigonLoader.loadPuzzle(new File("Raw Puzzle.txt"));
-		} catch (IOException e) {
-			e.printStackTrace();
-			return;
-		}
+		TrigonPuzzle puzzle = loadDefaultPuzzle();
+		
 //		blankOut(puzzle);
 //		puzzle = new TrigonGenerator(new Random("Gee, willy, two weiners!".hashCode()), 6).generatePuzzle(true);
 		
@@ -75,6 +73,23 @@ public class AppTrigons {
 		mw.setVisible(true);
 	}
 	
+	private static TrigonPuzzle loadDefaultPuzzle() {
+		File defaultFile = new File(DEFAULT_PUZZLE_FILENAME);
+		if(defaultFile.exists()){
+			try {
+				return TrigonLoader.loadPuzzle(defaultFile);
+			} catch(Exception e){
+				e.printStackTrace();
+			}
+		}
+		try {
+			return TrigonLoader.loadPuzzle(DEFAULT_PUZZLE);
+		} catch(Exception e){
+			e.printStackTrace();
+		}
+		return new TriPuzzle();
+	}
+
 	private static TrigonPuzzle generateNewPuzzleFromTemplate(TrigonPuzzle puzzle,
 			Random rand) {
 		TrigonFiller solver = new TrigonFiller(puzzle, rand);
